@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+Shortlisted Candidates
+</title>
+
+<link rel="stylesheet"
+href="style.css">
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>
+Shortlisted Candidates
+</h1>
+
+<button
+onclick="loadShortlisted()">
+View Shortlisted
+</button>
+
+<div id="shortlisted"></div>
+
+</div>
+
+<script>
+
+async function loadShortlisted(){
+
+const response =
+await fetch(
+"http://127.0.0.1:8000/shortlisted"
+);
+
+const data =
+await response.json();
+
+let output = "";
+
+data.forEach(c=>{
+
+output += `
+
+<div class="card">
+
+<h2>
+${c.candidate_name}
+</h2>
+
+<p>
+Job:
+${c.job_title}
+</p>
+
+<p>
+Status:
+🟢 Shortlisted
+</p>
+
+</div>
+
+`;
+
+});
+
+document.getElementById(
+"shortlisted"
+).innerHTML =
+output;
+
+}
+
+</script>
+
+</body>
+</html>

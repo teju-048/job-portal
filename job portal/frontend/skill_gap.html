@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Skill Gap Analysis</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>Skill Gap Analysis</h1>
+
+<button onclick="loadSkills()">
+Check Skill Gap
+</button>
+
+<br><br>
+
+<div id="output"></div>
+
+</div>
+
+</div>
+
+<script>
+
+async function loadSkills(){
+
+const response =
+await fetch(
+"http://127.0.0.1:8000/skill-improvement"
+);
+
+const result =
+await response.json();
+
+document.getElementById("output")
+.innerHTML = `
+
+<h3>Your Skills</h3>
+<p>${result.your_skills.join(", ")}</p>
+
+<h3>Required Skills</h3>
+<p>${result.required_skills.join(", ")}</p>
+
+<h3>Missing Skills</h3>
+<p style="color:red">
+${result.missing_skills.join(", ")}
+</p>
+
+`;
+
+}
+
+</script>
+
+</body>
+</html>

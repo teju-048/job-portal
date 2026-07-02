@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sidebar">
+
+<h2>Smart Job Portal</h2>
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="candidate_dashboard.html">
+Candidate Profile
+</a>
+
+<a href="recruiter_dashboard.html">
+Recruiter Jobs
+</a>
+
+<a href="recommendation.html">
+Recommendations
+</a>
+
+<a href="analytics.html">
+Analytics
+</a>
+
+</div>
+
+<div class="main-content">
+
+<div class="welcome-card">
+
+<h1>Welcome Back 👋</h1>
+
+<p>
+Intelligent Job Matching Platform
+</p>
+
+</div>
+
+<div class="stats-grid">
+
+<div class="stat-card">
+<h2 id="candidateCount">0</h2>
+<p>Candidates</p>
+</div>
+
+<div class="stat-card">
+<h2 id="jobCount">0</h2>
+<p>Jobs</p>
+</div>
+
+<div class="stat-card">
+<h2 id="applicationCount">0</h2>
+<p>Applications</p>
+</div>
+
+<div class="stat-card">
+<h2 id="shortlistCount">0</h2>
+<p>Shortlisted</p>
+</div>
+
+</div>
+
+</div>
+<script>
+
+async function loadDashboardStats(){
+
+    try{
+
+        const response =
+        await fetch(
+        "http://127.0.0.1:8000/analytics"
+        );
+
+        const result =
+        await response.json();
+
+        document.getElementById(
+        "candidateCount"
+        ).innerHTML =
+        result.total_candidates;
+
+        document.getElementById(
+        "jobCount"
+        ).innerHTML =
+        result.total_jobs;
+
+        document.getElementById(
+        "applicationCount"
+        ).innerHTML =
+        result.total_applications;
+
+        document.getElementById(
+        "shortlistCount"
+        ).innerHTML =
+        result.total_shortlisted;
+
+    }
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+loadDashboardStats();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Applicants</title>
+<link rel="stylesheet"
+href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>Job Applicants</h1>
+
+<button onclick="loadApplicants()">
+Load Applicants
+</button>
+
+<div id="applicants"></div>
+
+</div>
+
+<script>
+
+async function loadApplicants(){
+
+const response =
+await fetch(
+"http://127.0.0.1:8000/applications"
+);
+
+const data =
+await response.json();
+
+let output = "";
+
+data.forEach(app=>{
+
+output += `
+
+<div class="card">
+
+<h3>
+${app.candidate_name}
+</h3>
+
+<p>
+Applied For:
+${app.job_title}
+</p>
+
+<button
+onclick="shortlistCandidate(
+'${app.candidate_name}',
+'${app.job_title}'
+)">
+Shortlist
+</button>
+
+</div>
+
+`;
+
+});
+
+document.getElementById(
+"applicants"
+).innerHTML = output;
+
+}
+async function shortlistCandidate(
+candidate,
+job
+){
+
+await fetch(
+"http://127.0.0.1:8000/shortlist",
+{
+method:"POST",
+headers:{
+"Content-Type":
+"application/json"
+},
+body:JSON.stringify({
+candidate_name:
+candidate,
+job_title:
+job
+})
+}
+);
+
+alert(
+"Candidate Shortlisted"
+);
+
+}
+
+</script>
+
+</body>
+</html>

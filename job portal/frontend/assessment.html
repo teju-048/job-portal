@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Language Assessment</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>Language Assessment</h1>
+
+<div id="questions"></div>
+
+<br>
+
+<button onclick="submitAssessment()">
+Submit Assessment
+</button>
+
+<br><br>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+const languages =
+localStorage.getItem("candidateLanguages");
+
+let questionsHTML = "";
+
+if(languages){
+
+const langList =
+languages.toLowerCase().split(",");
+
+if(langList.includes("python")){
+
+questionsHTML += `
+
+<div class="card">
+<h3>Python Assessment</h3>
+
+<p>1. Which keyword is used to define a function?</p>
+<input type="radio" name="python1" value="A"> function
+<input type="radio" name="python1" value="B"> def
+<input type="radio" name="python1" value="C"> create
+
+<p>2. Which data type is immutable?</p>
+<input type="radio" name="python2" value="A"> List
+<input type="radio" name="python2" value="B"> Tuple
+<input type="radio" name="python2" value="C"> Dictionary
+
+<p>3. Which symbol is used for comments?</p>
+<input type="radio" name="python3" value="A"> //
+<input type="radio" name="python3" value="B"> #
+<input type="radio" name="python3" value="C"> --
+
+<p>4. What does len() return?</p>
+<input type="radio" name="python4" value="A"> Length
+<input type="radio" name="python4" value="B"> Type
+<input type="radio" name="python4" value="C"> Value
+
+<p>5. Python is?</p>
+<input type="radio" name="python5" value="A"> Database
+<input type="radio" name="python5" value="B"> OS
+<input type="radio" name="python5" value="C"> Interpreted Language
+
+<p>6. Which keyword handles exceptions?</p>
+<input type="radio" name="python6" value="A"> try
+<input type="radio" name="python6" value="B"> catch
+<input type="radio" name="python6" value="C"> throw
+
+<p>7. Which function takes user input?</p>
+<input type="radio" name="python7" value="A"> input()
+<input type="radio" name="python7" value="B"> scanf()
+<input type="radio" name="python7" value="C"> cin
+
+<p>8. Which data type stores key-value pairs?</p>
+<input type="radio" name="python8" value="A"> List
+<input type="radio" name="python8" value="B"> Dictionary
+<input type="radio" name="python8" value="C"> Tuple
+
+<p>9. Python file extension?</p>
+<input type="radio" name="python9" value="A"> .java
+<input type="radio" name="python9" value="B"> .py
+<input type="radio" name="python9" value="C"> .sql
+
+<p>10. Which loop repeats until condition fails?</p>
+<input type="radio" name="python10" value="A"> for
+<input type="radio" name="python10" value="B"> while
+<input type="radio" name="python10" value="C"> both
+
+<p>11. Which function prints output?</p>
+<input type="radio" name="python11" value="A"> display()
+<input type="radio" name="python11" value="B"> print()
+<input type="radio" name="python11" value="C"> show()
+
+<p>12. Python supports OOP?</p>
+<input type="radio" name="python12" value="A"> Yes
+<input type="radio" name="python12" value="B"> No
+<input type="radio" name="python12" value="C"> Partial
+
+<p>13. Which operator means power?</p>
+<input type="radio" name="python13" value="A"> ^
+<input type="radio" name="python13" value="B"> **
+<input type="radio" name="python13" value="C"> %
+
+<p>14. List indexing starts from?</p>
+<input type="radio" name="python14" value="A"> 0
+<input type="radio" name="python14" value="B"> 1
+<input type="radio" name="python14" value="C"> -1
+
+<p>15. Which keyword creates class?</p>
+<input type="radio" name="python15" value="A"> object
+<input type="radio" name="python15" value="B"> class
+<input type="radio" name="python15" value="C"> new
+
+</div>
+<h3>Python Coding Question 1</h3>
+
+<p>
+Write a Python program to find factorial of a number.
+</p>
+
+<textarea
+id="pythonCode1"
+rows="8"
+placeholder="Write Python code here">
+</textarea>
+
+<h3>Python Coding Question 2</h3>
+
+<p>
+Write a Python program to check whether a string is palindrome.
+</p>
+
+<textarea
+id="pythonCode2"
+rows="8"
+placeholder="Write Python code here">
+</textarea>
+
+`;
+
+}
+if(langList.includes("java")){
+
+questionsHTML += `
+
+<div class="card">
+
+<h3>Java Assessment</h3>
+
+<p>1. Java is?</p>
+<input type="radio" name="java1" value="A"> Platform Independent
+<input type="radio" name="java1" value="B"> Database
+<input type="radio" name="java1" value="C"> Browser
+
+<p>2. JVM stands for?</p>
+<input type="radio" name="java2" value="A"> Java Virtual Machine
+<input type="radio" name="java2" value="B"> Java View Machine
+<input type="radio" name="java2" value="C"> Java Variable Machine
+
+<p>3. Which keyword is used for inheritance?</p>
+<input type="radio" name="java3" value="A"> extend
+<input type="radio" name="java3" value="B"> extends
+<input type="radio" name="java3" value="C"> inherit
+
+<p>4. Which keyword creates a class?</p>
+<input type="radio" name="java4" value="A"> class
+<input type="radio" name="java4" value="B"> Class
+<input type="radio" name="java4" value="C"> object
+
+<p>5. Java supports?</p>
+<input type="radio" name="java5" value="A"> OOP
+<input type="radio" name="java5" value="B"> Only DB
+<input type="radio" name="java5" value="C"> Networking only
+
+<p>6. Which package contains Scanner?</p>
+<input type="radio" name="java6" value="A"> java.io
+<input type="radio" name="java6" value="B"> java.util
+<input type="radio" name="java6" value="C"> java.lang
+
+<p>7. Java file extension?</p>
+<input type="radio" name="java7" value="A"> .java
+<input type="radio" name="java7" value="B"> .js
+<input type="radio" name="java7" value="C"> .class
+
+<p>8. Which method starts program execution?</p>
+<input type="radio" name="java8" value="A"> start()
+<input type="radio" name="java8" value="B"> run()
+<input type="radio" name="java8" value="C"> main()
+
+<p>9. Which keyword creates an object?</p>
+<input type="radio" name="java9" value="A"> object
+<input type="radio" name="java9" value="B"> new
+<input type="radio" name="java9" value="C"> create
+
+<p>10. Java supports OOP?</p>
+<input type="radio" name="java10" value="A"> Yes
+<input type="radio" name="java10" value="B"> No
+<input type="radio" name="java10" value="C"> Partially
+
+<p>11. Most restrictive access modifier?</p>
+<input type="radio" name="java11" value="A"> public
+<input type="radio" name="java11" value="B"> private
+<input type="radio" name="java11" value="C"> protected
+
+<p>12. Which collection stores unique values?</p>
+<input type="radio" name="java12" value="A"> List
+<input type="radio" name="java12" value="B"> Set
+<input type="radio" name="java12" value="C"> ArrayList
+
+<p>13. Which keyword is used for inheritance?</p>
+<input type="radio" name="java13" value="A"> inherit
+<input type="radio" name="java13" value="B"> extends
+<input type="radio" name="java13" value="C"> implement
+
+<p>14. JVM converts bytecode into?</p>
+<input type="radio" name="java14" value="A"> Machine Code
+<input type="radio" name="java14" value="B"> Source Code
+<input type="radio" name="java14" value="C"> Database
+
+<p>15. Java is strongly typed?</p>
+<input type="radio" name="java15" value="A"> Yes
+<input type="radio" name="java15" value="B"> No
+<input type="radio" name="java15" value="C"> Sometimes
+
+<h3>Java Coding Question 1</h3>
+
+<p>
+Write a Java program to reverse a string.
+</p>
+
+<textarea
+id="javaCode1"
+rows="8"
+placeholder="Write Java code here">
+</textarea>
+
+<h3>Java Coding Question 2</h3>
+
+<p>
+Write a Java program to find the largest element in an array.
+</p>
+
+<textarea
+id="javaCode2"
+rows="8"
+placeholder="Write Java code here">
+</textarea>
+
+</div>
+
+`;
+}
+
+if(langList.includes("sql")){
+
+questionsHTML += `
+
+<div class="card">
+
+<h3>SQL Assessment</h3>
+
+<p>1. Which command retrieves data?</p>
+<input type="radio" name="sql1" value="A"> GET
+<input type="radio" name="sql1" value="B"> SELECT
+<input type="radio" name="sql1" value="C"> SHOW
+
+<p>2. Which command inserts data?</p>
+<input type="radio" name="sql2" value="A"> INSERT
+<input type="radio" name="sql2" value="B"> ADD
+<input type="radio" name="sql2" value="C"> PUT
+
+<p>3. Primary Key is?</p>
+<input type="radio" name="sql3" value="A"> Duplicate Value
+<input type="radio" name="sql3" value="B"> Unique Identifier
+<input type="radio" name="sql3" value="C"> Foreign Key
+
+<p>4. Which clause filters records?</p>
+<input type="radio" name="sql4" value="A"> WHERE
+<input type="radio" name="sql4" value="B"> GROUP BY
+<input type="radio" name="sql4" value="C"> ORDER BY
+
+<p>5. Which function counts rows?</p>
+<input type="radio" name="sql5" value="A"> SUM
+<input type="radio" name="sql5" value="B"> AVG
+<input type="radio" name="sql5" value="C"> COUNT
+
+<p>6. Which command removes a table?</p>
+<input type="radio" name="sql6" value="A"> DELETE
+<input type="radio" name="sql6" value="B"> DROP
+<input type="radio" name="sql6" value="C"> REMOVE
+
+<p>7. Which command changes table structure?</p>
+<input type="radio" name="sql7" value="A"> ALTER
+<input type="radio" name="sql7" value="B"> UPDATE
+<input type="radio" name="sql7" value="C"> MODIFY
+
+<p>8. Which clause sorts records?</p>
+<input type="radio" name="sql8" value="A"> ORDER BY
+<input type="radio" name="sql8" value="B"> GROUP BY
+<input type="radio" name="sql8" value="C"> SORT
+
+<p>9. Which function gives average?</p>
+<input type="radio" name="sql9" value="A"> SUM
+<input type="radio" name="sql9" value="B"> COUNT
+<input type="radio" name="sql9" value="C"> AVG
+
+<p>10. Which join returns matching records only?</p>
+<input type="radio" name="sql10" value="A"> LEFT JOIN
+<input type="radio" name="sql10" value="B"> INNER JOIN
+<input type="radio" name="sql10" value="C"> RIGHT JOIN
+
+<p>11. Which command updates records?</p>
+<input type="radio" name="sql11" value="A"> UPDATE
+<input type="radio" name="sql11" value="B"> MODIFY
+<input type="radio" name="sql11" value="C"> CHANGE
+
+<p>12. Which command deletes records?</p>
+<input type="radio" name="sql12" value="A"> DROP
+<input type="radio" name="sql12" value="B"> DELETE
+<input type="radio" name="sql12" value="C"> REMOVE
+
+<p>13. Which key references another table?</p>
+<input type="radio" name="sql13" value="A"> PRIMARY KEY
+<input type="radio" name="sql13" value="B"> FOREIGN KEY
+<input type="radio" name="sql13" value="C"> UNIQUE KEY
+
+<p>14. Which function returns maximum value?</p>
+<input type="radio" name="sql14" value="A"> MAX
+<input type="radio" name="sql14" value="B"> MIN
+<input type="radio" name="sql14" value="C"> AVG
+
+<p>15. Which constraint prevents NULL values?</p>
+<input type="radio" name="sql15" value="A"> UNIQUE
+<input type="radio" name="sql15" value="B"> NOT NULL
+<input type="radio" name="sql15" value="C"> CHECK
+
+<h3>SQL Coding Question 1</h3>
+
+<p>
+Write an SQL query to find employees whose salary is greater than 50000.
+</p>
+
+<textarea
+id="sqlCode1"
+rows="8"
+placeholder="Write SQL query here">
+</textarea>
+
+<h3>SQL Coding Question 2</h3>
+
+<p>
+Write an SQL query to display the top 5 highest salaries.
+</p>
+
+<textarea
+id="sqlCode2"
+rows="8"
+placeholder="Write SQL query here">
+</textarea>
+
+</div>
+
+`;
+}
+}
+
+document.getElementById("questions")
+.innerHTML = questionsHTML;
+
+async function submitAssessment(){
+
+let correctMCQ=0;let totalMCQ=0;
+let codingScore=0;let codingTotal=0;
+
+// ---------------- PYTHON ----------------
+
+if(document.querySelector('input[name="python1"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python1"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="python2"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python2"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="python3"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python3"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="python4"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python4"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="python5"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python5"]:checked').value==="C")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="python6"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python6"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="python7"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python7"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="python8"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python8"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="python9"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python9"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="python10"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python10"]:checked').value==="C")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="python11"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python11"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="python12"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python12"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="python13"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python13"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="python14"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python14"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="python15"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="python15"]:checked').value==="B")
+        correctMCQ++;
+}
+// ---------------- JAVA ----------------
+
+
+if(document.querySelector('input[name="java1"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java1"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="java2"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java2"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="java3"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java3"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="java4"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java4"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="java5"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java5"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="java6"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java6"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="java7"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java7"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="java8"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java8"]:checked').value==="C")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="java9"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java9"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="java10"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java10"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="java11"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java11"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="java12"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java12"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="java13"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java13"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="java14"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java14"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="java15"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="java15"]:checked').value==="A")
+        correctMCQ++;
+}
+// ---------------- SQL ----------------
+
+if(document.querySelector('input[name="sql1"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql1"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="sql2"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql2"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="sql3"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql3"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="sql4"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql4"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="sql5"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql5"]:checked').value==="C")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="sql6"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql6"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="sql7"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql7"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="sql8"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql8"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="sql9"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql9"]:checked').value==="C")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="sql10"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql10"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="sql11"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql11"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="sql12"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql12"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="sql13"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql13"]:checked').value==="B")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="sql14"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql14"]:checked').value==="A")
+        correctMCQ++;
+}
+
+if(document.querySelector('input[name="sql15"]:checked')){
+    totalMCQ++;
+    if(document.querySelector('input[name="sql15"]:checked').value==="B")
+        correctMCQ++;
+}
+
+// ---------------- CODING QUESTIONS ----------------
+
+const pythonCode1 =
+document.getElementById("pythonCode1")?.value || "";
+
+const pythonCode2 =
+document.getElementById("pythonCode2")?.value || "";
+
+const javaCode1 =
+document.getElementById("javaCode1")?.value || "";
+
+const javaCode2 =
+document.getElementById("javaCode2")?.value || "";
+
+const sqlCode1 =
+document.getElementById("sqlCode1")?.value || "";
+
+const sqlCode2 =
+document.getElementById("sqlCode2")?.value || "";
+
+codingTotal = 30;
+
+if(
+pythonCode1.toLowerCase().includes("for") ||
+pythonCode1.toLowerCase().includes("while")
+){
+codingScore += 2;
+}
+
+if(
+pythonCode1.toLowerCase().includes("factorial")
+){
+codingScore += 3;
+}
+
+if(
+pythonCode2.toLowerCase().includes("palindrome") ||
+pythonCode2.toLowerCase().includes("[::-1]")
+){
+codingScore += 5;
+}
+// Java Coding
+
+if(javaCode1.toLowerCase().includes("reverse")){
+    codingScore += 5;
+}
+
+if(javaCode2.toLowerCase().includes("largest")){
+    codingScore += 5;
+}
+
+// SQL Coding
+
+if(sqlCode1.toLowerCase().includes("select") &&
+   sqlCode1.toLowerCase().includes("where")){
+    codingScore += 5;
+}
+
+if(sqlCode2.toLowerCase().includes("select")){
+    codingScore += 5;
+}
+// ---------------- VALIDATION ----------------
+
+if(
+totalMCQ === 0 &&
+pythonCode1.length === 0 &&
+pythonCode2.length === 0 &&
+javaCode1.length === 0 &&
+javaCode2.length === 0 &&
+sqlCode1.length === 0 &&
+sqlCode2.length === 0
+){
+
+    alert("Please answer at least one question.");
+
+    return;
+}
+
+let totalQuestions = 45;
+
+let mcqPercentage =
+(correctMCQ / totalQuestions) * 100;
+
+let codingPercentage = 0;
+
+if(codingTotal > 0){
+codingPercentage =
+(codingScore / codingTotal) * 100;
+}
+
+let score = Math.round(
+(mcqPercentage * 0.7)
++
+(codingPercentage * 0.3)
+);
+
+let level = "";
+
+if(score >= 80)
+    level = "Excellent";
+
+else if(score >= 50)
+    level = "Good";
+
+else
+    level = "Needs Improvement";
+
+document.getElementById("result")
+.innerHTML = `
+
+<div class="card">
+
+<h2>Assessment Submitted Successfully</h2>
+
+<h3>MCQ Score : ${Math.round(mcqPercentage)}%</h3>
+
+<h3>Coding Score : ${Math.round(codingPercentage)}%</h3>
+
+<h3>Final Score : ${score}/100</h3>
+
+<p>Status : ${level}</p>
+
+</div>
+
+`;
+
+localStorage.setItem(
+"assessmentScore",
+score
+);
+await fetch(
+"http://127.0.0.1:8000/assessment",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+candidate_name:
+localStorage.getItem("candidateName"),
+score: score
+})
+}
+);
+
+let history = JSON.parse(
+localStorage.getItem("history")
+) || [];
+
+history.push(score);
+
+localStorage.setItem(
+"history",
+JSON.stringify(history)
+);
+
+}
+
+</script>
+
+</body>
+</html>

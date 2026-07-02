@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Job Recommendations</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Intelligent Job Recommendations</h1>
+
+    <p>
+        Discover jobs matched using
+        Trust-Aware Matching,
+        Reliability Assessment,
+        and Adaptive Skill Prioritization.
+    </p>
+
+    <button onclick="loadJobs()">
+        Load Recommendations
+    </button>
+
+    <br><br>
+
+    <div id="jobs"></div>
+
+</div>
+
+<script>
+
+async function loadJobs(){
+
+    try {
+
+        /* Temporary candidate name */
+        const candidateName = "preethi";
+
+        const response = await fetch(
+            `http://127.0.0.1:8000/recommendations/${candidateName}`
+        );
+
+        if(!response.ok){
+            alert("Failed to load recommendations");
+            return;
+        }
+
+        const result = await response.json();
+
+        let output = "";
+
+        result.recommended_jobs.forEach(job => {
+
+            output += `
+
+            <div class="job-card">
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                ">
+
+                    <div>
+                        <h2>${job.job}</h2>
+                        <p style="color:#6b7280">
+                            ${job.company}
+                        </p>
+                    </div>
+
+                    <div class="trust-badge">
+                        ${job.trust_badge}
+                    </div>
+
+                </div>
+
+                <p>
+                    💰 Salary:
+                    <b>${job.salary}</b>
+                </p>
+
+                <p>
+                    📍 Location:
+                    <b>${job.location}</b>
+                </p>
+
+                <p>
+                    💼 Job Type:
+                    <b>${job.job_type}</b>
+                </p>
+
+                <hr>
+
+                <p>
+                    <strong>Match Score:</strong>
+                    ${job.match_score}%
+                </p>
+
+                <p>
+                    <strong>Reliability Score:</strong>
+                    ${job.reliability_score}%
+                </p>
+
+                <p>
+                    <strong>Trust Badge:</strong>
+                    ${job.trust_badge}
+                </p>
+
+                <p>
+                    <strong>Experience Match:</strong>
+                    ${job.experience_match}%
+                </p>
+
+                <p>
+                    <strong>Overall Score:</strong>
+                    ${job.overall_score}%
+                </p>
+
+                <p>
+                    <strong>Confidence:</strong>
+                    ${job.confidence}
+                </p>
+
+                <hr>
+
+                <h3>Matched Skills</h3>
+
+                <ul>
+                    ${job.matched_skills.map(skill =>
+                        `<li>${skill}</li>`
+                    ).join("")}
+                </ul>
+
+                <h3>Missing Skills</h3>
+
+                <ul>
+                    ${job.missing_skills.map(skill =>
+                        `<li>${skill}</li>`
+                    ).join("")}
+                </ul>
+
+                <button onclick="applyJob('${job.job}')">
+                    Apply Now
+                </button>
+
+            </div>
+
+            <br>
+            `;
+        });
+
+        document.getElementById("jobs").innerHTML = output;
+
+    } catch(error){
+
+        console.error(error);
+
+        alert("Error loading recommendations");
+    }
+}
+
+async function applyJob(jobTitle){
+
+    try{
+
+        const response = await fetch(
+            "http://127.0.0.1:8000/apply-job",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    candidate_name:"preethi",
+                    job_title:jobTitle
+                })
+            }
+        );
+
+        const result = await response.json();
+
+        alert(result.message);
+
+    }catch(error){
+
+        console.error(error);
+
+        alert("Failed to apply");
+    }
+}
+
+</script>
+
+</body>
+</html>

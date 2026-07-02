@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Recruiter Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h2>Post Job</h2>
+
+<input type="text" id="title" placeholder="Job Title"><br><br>
+
+<input type="text" id="description" placeholder="Description"><br><br>
+
+<input type="text" id="skills" placeholder="Python,SQL"><br><br>
+
+<input type="number" id="experience" placeholder="Experience Required"><br><br>
+<input type="text"
+id="company"
+placeholder="Company Name">
+
+<br><br>
+
+<input type="text"
+id="salary"
+placeholder="Salary (e.g. 8-12 LPA)">
+
+<br><br>
+
+<input type="text"
+id="location"
+placeholder="Location">
+
+<br><br>
+
+<input type="text"
+id="jobType"
+placeholder="Job Type (Full Time / Part Time)">
+
+<br><br>
+
+<button onclick="postJob()">Post Job</button>
+
+<br><br>
+<a href="view_applicants.html">
+<button>
+View Applicants
+</button>
+</a>
+
+<a href="shortlisted_candidates.html">
+<button>
+Shortlisted Candidates
+</button>
+</a> 
+
+<h2>Posted Jobs</h2>
+
+<button onclick="loadJobs()">
+View Posted Jobs
+</button>
+
+<div id="postedJobs"></div>
+
+
+
+</div>
+
+<script>
+
+async function postJob(){
+
+const data = {
+
+    title:
+    document.getElementById("title").value,
+
+    description:
+    document.getElementById("description").value,
+
+    skills:
+    document.getElementById("skills").value.split(","),
+
+    experience_required:
+    parseInt(
+    document.getElementById("experience").value
+    ),
+
+    company:
+    document.getElementById("company").value,
+
+    salary:
+    document.getElementById("salary").value,
+
+    location:
+    document.getElementById("location").value,
+
+    job_type:
+    document.getElementById("jobType").value
+
+};
+
+const response = await fetch(
+"http://127.0.0.1:8000/jobs",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(data)
+}
+);
+
+const result = await response.json();
+
+alert(result.message);
+
+}
+async function loadJobs(){
+
+const response =
+await fetch(
+"http://127.0.0.1:8000/jobs"
+);
+
+const jobs =
+await response.json();
+
+let output = "";
+
+jobs.forEach(job=>{
+
+output += `
+<div class="job-card">
+
+<h3>${job.title}</h3>
+
+<p>${job.description}</p>
+
+<p>
+Skills:
+${job.skills}
+</p>
+
+<p>
+Experience:
+${job.experience_required}
+ Years
+</p>
+
+</div>
+`;
+
+});
+
+document.getElementById(
+"postedJobs"
+).innerHTML = output;
+
+}
+
+async function shortlistCandidate(){
+
+const response = await fetch(
+"http://127.0.0.1:8000/shortlist",
+{
+method:"POST"
+}
+);
+
+const result = await response.json();
+
+alert(result.message);
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Candidate Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="card">
+        
+
+        <h2>Candidate Profile</h2>
+
+        <input type="text" id="name" placeholder="Name">
+
+        <input type="text" id="skills"
+        placeholder="Skills (Backend Development, API Development)">
+
+        <input type="text" id="languages"
+        placeholder="Languages (Python, Java, SQL)">
+
+        <input type="text" id="education"
+        placeholder="Education">
+
+        <input type="number" id="experience"
+        placeholder="Experience">
+
+        <input type="text" id="certifications"
+        placeholder="Certifications">
+
+        <button onclick="createProfile()">
+            Create Profile
+        </button>
+
+    </div>
+
+    <br><br>
+    
+
+    <h3>Profile Completion</h3>
+
+    <div class="progress">
+        <div
+            id="profileBar"
+            class="progress-bar"
+            style="width:0%">
+        </div>
+    </div>
+
+    <p id="profilePercent">0%</p>
+
+
+    <div class="card">
+
+        <h2>Language Assessment</h2>
+
+        <button onclick="checkLanguageAssessment()">
+            Quick Assessment
+        </button>
+
+        <button onclick="startAssessment()">
+            Take Full Assessment
+        </button>
+
+        <br><br>
+
+        <div id="languageResult">
+            Assessment will appear here
+        </div>
+
+    </div>
+
+    <br>
+    <div class="card">
+
+        <h2>Assessment History</h2>
+
+        <button onclick="showHistory()">
+        View History
+        </button>
+
+        <br><br>
+
+        <div id="historyResult">
+        No Assessments Yet
+    </div>
+
+    <br>
+    <div class="card">
+
+        <h2>Reliability Assessment</h2>
+
+        <button onclick="calculateScore()">
+            Calculate Reliability Score
+        </button>
+
+        <br><br>
+
+        <div id="score">
+            Reliability score will appear here
+        </div>
+
+    </div>
+    <br>
+    <div class="trust-badge" id="trustBadge">
+        AI Trust Badge : Not Evaluated
+    </div>
+
+</div>
+
+<script>
+
+function updateProfileCompletion(){
+
+    let completed = 0;
+
+    if(document.getElementById("name").value)
+        completed += 20;
+
+    if(document.getElementById("skills").value)
+        completed += 20;
+
+    if(document.getElementById("languages").value)
+        completed += 20;
+
+    if(document.getElementById("education").value)
+        completed += 20;
+
+    if(document.getElementById("certifications").value)
+        completed += 20;
+
+    document.getElementById("profileBar").style.width =
+    completed + "%";
+
+    document.getElementById("profilePercent").innerHTML =
+    completed + "% Completed";
+}
+
+async function createProfile(){
+
+    updateProfileCompletion();
+
+    const data = {
+        name: document.getElementById("name").value,
+        skills: document.getElementById("skills").value.split(","),
+        languages: document.getElementById("languages").value.split(","),
+        education: document.getElementById("education").value,
+        experience: parseInt(
+            document.getElementById("experience").value
+        ) || 0,
+        certifications: document.getElementById("certifications").value.split(",")
+    };
+
+    try{
+
+        const response = await fetch(
+        "http://127.0.0.1:8000/candidate/profile",
+        {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if(response.ok){
+
+            localStorage.setItem(
+                "candidateLanguages",
+                document.getElementById("languages").value
+            );
+
+            localStorage.setItem(
+                "candidateName",
+                document.getElementById("name").value
+            );
+
+            alert(result.message);
+        }
+        else{
+            alert("Error : " + JSON.stringify(result));
+        }
+
+    }
+    catch(error){
+        console.error(error);
+        alert("Backend server is not running.");
+    }
+}
+
+function checkLanguageAssessment(){
+
+    const languages =
+    document.getElementById("languages")
+    .value
+    .toLowerCase()
+    .split(",");
+
+    let score = 0;
+    let level = "";
+
+    if(languages.includes("python"))
+        score += 40;
+
+    if(languages.includes("java"))
+        score += 30;
+
+    if(languages.includes("sql"))
+        score += 20;
+
+    if(languages.includes("javascript"))
+        score += 10;
+
+    if(score >= 80)
+        level = "Excellent Candidate";
+    else if(score >= 50)
+        level = "Good Candidate";
+    else
+        level = "Needs Improvement";
+
+    document.getElementById("languageResult").innerHTML = `
+        <h3>Language Score : ${score}/100</h3>
+        <p>Status : ${level}</p>
+    `;
+}
+
+function startAssessment(){
+
+    const languages =
+    document.getElementById("languages").value;
+
+    if(languages.trim() === ""){
+
+        alert("Please enter languages first");
+        return;
+    }
+
+    localStorage.setItem(
+        "candidateLanguages",
+        languages
+    );
+
+    window.location.href = "assessment.html";
+}
+
+function showHistory(){
+
+    const history =
+    JSON.parse(
+        localStorage.getItem("history")
+    ) || [];
+
+    if(history.length === 0){
+
+        document.getElementById(
+            "historyResult"
+        ).innerHTML =
+        "No Assessment Taken";
+
+        return;
+    }
+
+    let output = "";
+
+    history.forEach((score,index)=>{
+
+        output += `
+        <p>
+        Assessment ${index+1} :
+        ${score}/100
+        </p>
+        `;
+    });
+
+    document.getElementById(
+        "historyResult"
+    ).innerHTML = output;
+}
+async function calculateScore(){
+
+    try{
+
+        const candidateName =
+            localStorage.getItem("candidateName");
+
+        const response = await fetch(
+            "http://127.0.0.1:8000/reliability-score",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    candidate_name: candidateName
+                })
+            }
+        );
+
+        const result = await response.json();
+
+        console.log(result);
+
+        let badge = "";
+
+        if(result.reliability_score >= 85)
+            badge = "🏆 Platinum Trust";
+
+        else if(result.reliability_score >= 70)
+            badge = "🥇 Gold Trust";
+
+        else if(result.reliability_score >= 55)
+            badge = "🥈 Silver Trust";
+
+        else
+            badge = "⚠ Needs Improvement";
+
+        document.getElementById("score").innerHTML = `
+            <h2>
+                Reliability Score :
+                ${result.reliability_score}/100
+            </h2>
+
+            <h3>${badge}</h3>
+        `;
+
+        document.getElementById("trustBadge").innerHTML =
+            "AI Trust Badge : " + badge;
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert("Backend server is not running.");
+    }
+}
+</script>
+
+</body>
+</html>
